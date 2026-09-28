@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>海贼王 ONEPIECE 俺は海賊王になる男だ</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		box-sizing:border-box;
+	}
+	body{
+		margin:0;
+		min-height:100vh;
+		background: transparent;
+		position: relative;
+		font-family:"Microsoft Yahei",sans-serif;
+		padding:24px;
+	}
+	body::before{
+		content:"";
+		position:fixed;
+		inset:0;
+		background-image: url("https://img7.sucaisucai.com/03/73/03473657_1.jpg");
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		filter: blur(18px);
+		transform: scale(1.1); 
+		z-index:-2;
+	}
+	header{
+		text-align:center;
+		margin-bottom:32px;
+	}
+	header h1{
+		color:#d62828;
+		font-size:44px;
+		margin-bottom:8px;
+	}
+	header p{
+		color:#444;
+		font-size:18px;
+	}
+	.nav-box{
+		display:flex;
+		justify-content:center;
+		gap:16px;
+		margin-bottom:32px;
+		flex-wrap:wrap;
+	}
+	.nav-item{
+		padding:10px 22px;
+		background:#222222;
+		color:#ffffff;
+		border-radius:8px;
+		cursor:pointer;
+		transition:0.25s;
+	}
+	.nav-item.active{
+		background:#d62828;
+	}
+	.nav-item:hover{
+		opacity:0.85;
+	}
+
+
+	.container{
+		max-width:1250px;
+		margin:0 auto;
+	}
+	.content-panel{
+		display:none;
+	}
+	.content-panel.show{
+		display:block;
+	}
+
+	.content-panel h2{
+		color:#222;
+		margin-bottom:20px;
+		border-left:6px solid #d62828;
+		padding-left:10px;
+	}
+
+	.card-wrap{
+		display:flex;
+		flex-direction:column;
+		gap:20px;
+	}
+	.card{
+		background:transparent;
+		border-radius:10px;
+		box-shadow:0 2px 9px rgba(0,0,0,0.12);
+		overflow:hidden;
+		transition:0.25s;
+		width:100%;
+	}
+	.card:hover{
+		transform:translateY(-3px);
+		box-shadow:0 6px 16px rgba(0,0,0,0.18);
+	}
+	.card-body{
+		padding:24px;
+		position: relative;
+		z-index: 1;
+		text-align:center;
+		font-size: 20px;
+	}
+	.card-body h3{
+		color:#d62828;
+		margin-bottom:16px;
+		padding-bottom:6px;
+		border-bottom:2px solid #eeeeee;
+		text-align:center;
+		font-size: 24px;
+	}
+	.text-item{
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		gap:30px;
+		padding:10px 0;
+		transition:all 0.3s ease;
+	}
+	.text-content{
+		transition:all 0.3s ease;
+		text-align:center;
+		flex-shrink:0;
+		font-size: 20px;
+	}
+	.img-group{
+		display:flex;
+		gap:12px;
+		margin-top:10px;
+		justify-content:center;
+		transition:all 0.3s ease;
+	}
+	.small-img{
+		width:75px;
+		height:75px;
+		object-fit:cover;
+		border-radius:6px;
+		cursor:pointer;
+		transition:transform 0.25s ease, box-shadow 0.25s ease;
+	}
+	.small-img:hover{
+		transform: scale(1.35);
+		box-shadow:0 0 14px rgba(0,0,0,0.4);
+	}
+	.img-box{
+		width:0px;
+		height:180px;
+		border-radius:8px;
+		overflow:hidden;
+		transition: width 0.3s ease;
+		position: relative;
+		z-index: 2;
+		flex-shrink: 0;
+	}
+	.img-box img{
+		width:100%;
+		height:100%;
+		object-fit:cover;
+		display:block;
+	}
+	.text-item:hover{
+		justify-content:flex-start;
+	}
+	.text-item:hover .text-content{
+		text-align:left;
+	}
+	.text-item:hover .img-box{
+		width:260px;
+	}
+	.page-blur-bg{
+		position: fixed;
+		top:0;
+		left:0;
+		width:100vw;
+		height:100vh;
+		background-size: cover;
+		background-position:center;
+		background-repeat:no-repeat;
+		filter: blur(28px) brightness(0.4); 
+		transform: scale(1.1);
+		opacity:0;
+		transition: opacity 0.35s ease;
+		z-index:-1; 
+		pointer-events:none; 
+	}
+	:root{
+		--blind-hover-width: 30%;
+		--blind-container-width: 100%;
+		--blind-picture-height: 420px;
+	}
+	.blind-carousel-wrap{
+		width:100%;
+		margin-bottom:24px;
+		position:relative;
+	}
+	.blind-container {
+		display: flex;
+		flex: 1;
+		width: var(--blind-container-width);
+		overflow: hidden;
+		align-items: flex-start;
+		justify-content: center;
+	}
+	.blind-card {
+		flex: 1 1 1%;
+		position: relative;
+		transition: flex 600ms cubic-bezier(0.25, 1, 0.5, 1);
+		cursor: pointer;
+		overflow: hidden;
+	}
+	.blind-card.is-active {
+		flex-basis: 30%;
+	}
+	.blind-card__inner {
+		margin: 0.25rem;
+		background: #fff;
+		border-radius: 8px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+			0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		transition: all 0.3s ease;
+		height: 100%;
+	}
+	.blind-card.is-active .blind-card__inner {
+		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+			0 4px 6px -2px rgba(0, 0, 0, 0.05);
+		transform: translateY(-2px);
+	}
+	.blind-card picture {
+		width: 100%;
+		height: 0;
+		padding-bottom: var(--blind-picture-height);
+		overflow: hidden;
+		position: relative;
+	}
+	.blind-card picture img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		transition: transform 0.5s ease;
+	}
+	.blind-card.is-active picture img {
+		transform: scale(1);
+	}
+	.blind-carousel-indicators {
+		position: absolute;
+		bottom: 12px;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 6px;
+		z-index: 10;
+		background: rgba(0,0,0,0.25);
+		padding: 0.5rem 1rem;
+		border-radius: 1rem;
+	}
+	.blind-carousel-indicator {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: rgba(255, 255, 255, 0.5);
+		cursor: pointer;
+		transition: background-color 0.3s ease, width 0.3s ease,
+		border-radius 0.3s ease;
+	}
+	.blind-carousel-indicator.active {
+		background-color: #fff;
+		width: 24px;
+		border-radius: 4px;
+	}
+	</style>
+</head>
+
+<body>
+<div class="page-blur-bg"></div>
+<header>
+	<h1>ONE PIECE</h1>
+	<p>一场永不落幕的冒险</p>
+</header>
+<nav>
+	<div class="nav-box">
+		<div class="nav-item active" data-target="panel1">剧情简介</div>
+		<div class="nav-item" data-target="panel2">人物介绍</div>
+		<div class="nav-item" data-target="panel3">人物关系</div>
+		<div class="nav-item" data-target="panel4">海米同人</div>
+	</div>
+</nav>
+
+<div class="container">
+
+	<div class="content-panel show" id="panel1">
+		<h2>剧情简介·篇章回顾</h2>
+		<div class="card-wrap">
+			<div class="card">
+				<div class="card-body">
+					<h3>东海篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-eastblue"></div>
+						<div class="blind-carousel-indicators" id="indicator-eastblue"></div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">17岁的路飞扬帆出海</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/front20200307ac/352/w640h512/20200307/420b-iqmtvwv6575869.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败蒙卡，索隆上船，结交娜美</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/front/304/w640h464/20190103/7Q7Y-hqzxptn9795062.jpg/w700d1q75cms.jpg?by=cms_fixed_width">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败克洛，乌索普上船，得黄金梅利号</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinacn10113/197/w1123h674/20191217/67af-ikvenft5332124.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">草帽海贼团正式成立</div>
+						<div class="img-box">
+							<img src="https://img.3dmgame.com/uploads/images/news/20200619/1592567777_335625.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败克利克，山治上船</div>
+						<div class="img-box">
+							<img src="https://puui.qpic.cn/vpic_cover/f32046sbfp9/f32046sbfp9_hz.jpg/1280">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败鱼人阿龙，娜美正式上船</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn20190629s/200/w640h360/20190629/57d6-hyzpvis3090729.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">进入伟大航路，遇到鲸鱼阿布</div>
+						<div class="https://pic.010ut.com/hzw/2017-09/6_110920145651_1.jpg">
+							<img src=dh7.jpg>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>阿拉巴斯坦篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-alabasta"></div>
+						<div class="blind-carousel-indicators" id="indicator-alabasta"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">认识微微，结交罗宾</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20230514s/178/w640h338/20230514/1f40-cc242287c100dd3abfacabe0c532c904.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">娜美生病，登陆冬岛，结交乔巴</div>
+						<div class="img-box">
+							<img src="https://pic4.zhimg.com/v2-db9b18500465ff414ecb982af42df24b_1440w.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败瓦尔波，乔巴上船</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn20109/343/w750h393/20190114/e561-hrpcmqw4994284.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败克洛克达尔，拯救阿拉巴斯坦</div>
+						<div class="img-box">
+							<img src="https://pic.kts.g.mi.com/1c678348af8f9a4dcb96ca8d9f553ae57347382093654078555.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">微微拒绝邀约，罗宾同行</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd10010/87/w1080h607/20210513/1c9b-kpzzqmz7584613.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>空岛篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-kongdao"></div>
+						<div class="blind-carousel-indicators" id="indicator-kongdao"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">登陆空岛，打败艾尼路</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn10111/141/w640h301/20200115/3958-imztzhp0768224.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">敲响黄金钟，解放空岛</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn10111/164/w640h324/20200115/1590-imztzhp0769491.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>司法岛篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-sifa"></div>
+						<div class="blind-carousel-indicators" id="indicator-sifa"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">修理梅利号，登陆水上城市</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd10116/354/w1280h674/20200805/38cd-ixkvvuc2382029.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">罗宾为同伴向政府自首下船</div>
+						<div class="img-box">
+							<img src="https://p4.itc.cn/q_70/images03/20211210/931b05ce690b4ef7842324ccdf0f36cd.jpeg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">乌索普为梅利号赌气下船</div>
+						<div class="img-box">
+							<img src="https://5b0988e595225.cdn.sohucs.com/images/20200225/ed7d572281f14b2592fd37e839e7c3c1.jpeg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">草帽团挑战世界政府，闯司法岛</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn/w640h360/20180129/2cca-fyqzcxi0807820.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">路飞开二档和三档打败cp9，罗宾正式上船</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/front/512/w1267h845/20190414/vWJu-hvscktf7283710.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">告别梅利号，得桑尼号，弗兰奇正式上船</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn20115/198/w640h358/20181219/4b71-hqnkypr0921544.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">告别水之都，乌索普重新上船</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinacn21/106/w580h326/20180412/9782-fyzeyqc2387106.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>恐怖三角帆船篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-sanjiaofan"></div>
+						<div class="blind-carousel-indicators" id="indicator-sanjiaofan"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">结识布鲁克</div>
+						<div class="img-box">
+							<img src="https://e0.ifengimg.com/10/2019/0310/98905A9478E1F0C09B59210509F8FF661E340C6D_size390_w1280_h720.png">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">打败莫里亚，布鲁克正式上船</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinacn17/87/w600h287/20181113/ab28-hnvukfe4426631.png">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">得知阿布是布鲁克的伙伴</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn/20171117/af55-fynwxum3488381.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>香波地群岛-顶上战争</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-3d2y"></div>
+						<div class="blind-carousel-indicators" id="indicator-3d2y"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">挑战天龙人，结识极恶时代</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn20110/240/w640h400/20190320/2616-huqrnan0341080.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">闯推进城，海底监牢营救艾斯，结识甚平</div>
+						<div class="img-box">
+							<img src="https://p0.ssl.img.360kuai.com/dmfd/__60/t01d72bf29e574f2b84.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">顶上战争爆发，旧时代结束，艾斯身死</div>
+						<div class="img-box">
+							<img src="https://5b0988e595225.cdn.sohucs.com/images/20200308/e703e9f231bc4039ac929f209ddc1db5.jpeg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">与伙伴相约，修行两年后再见</div>
+						<div class="img-box">
+							<img src="http://img02.taobaocdn.com/bao/uploaded/i2/12536023118292714/T1RzqBXC0hXXXXXXXX_!!0-item_pic.jpg_460x460.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>鱼人岛篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-yuren"></div>
+						<div class="blind-carousel-indicators" id="indicator-yuren"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">打败霍迪，并向大妈宣战</div>
+						<div class="img-box">
+							<img src="https://static.zuiyouxi.com/web/attached/image/20140103/20140103143305_51513.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>德雷斯罗萨篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-deleisiluosa"></div>
+						<div class="blind-carousel-indicators" id="indicator-deleisiluosa"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">登陆庞克哈萨德，结识桃之助，打败凯撒</div>
+						<div class="img-box">
+							<img src="https://p9.itc.cn/images01/20210116/ccbfde743b564dfe9a8adaac392d234b.jpeg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">遇二哥萨博，夺烧烧果实</div>
+						<div class="img-box">
+							<img src="https://c-ssl.dtstatic.com/uploads/item/202007/17/20200717084518_rngsc.thumb.1000_0.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">4档打败多弗朗明哥，拯救德雷斯罗萨</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20200604ac/200/w640h360/20200604/2878-iumkapx2474713.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">七个海贼团组成草帽大海贼团</div>
+						<div class="img-box">
+							<img src="https://p8.itc.cn/images01/20200604/e4a5926e4654412da1743612d38e9c6a.jpeg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>佐岛-蛋糕岛</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-dangao"></div>
+						<div class="blind-carousel-indicators" id="indicator-dangao"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">与同伴汇合，得知山治被迫离开</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/translate/20170904/q_2J-fykqmrv9314878.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">前往蛋糕岛，挑战大妈海贼团</div>
+						<div class="img-box">
+							<img src="https://k.sinaimg.cn/n/sinacn11/263/w680h383/20181104/fba2-hnknmqw6852658.jpg/w700d1q75cms.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">山治回归，五皇诞生</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinacn/w1920h1080/20180205/165c-fyrhcqy6725569.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>和之国</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-hezhiguo"></div>
+						<div class="blind-carousel-indicators" id="indicator-hezhiguo"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">登陆和之国</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20200629ac/457/w1204h853/20200629/6165-ivrxcex2324422.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">联合罗和旧党，打败凯多和大妈</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20210207ac/600/w1920h1080/20210207/014c-kirmaiu6664757.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>蛋尖岛篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-danjian"></div>
+						<div class="blind-carousel-indicators" id="indicator-danjian"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">登陆未来岛，救下波妮，结识贝加庞克及其分身</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20118/625/w400h225/20230315/f6fc-970f2fca03887594a8cf7b97565fd392.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">CP0来袭，炽天使启动，岛屿内乱爆发</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20107/449/w641h608/20220921/dd2d-c372690cabb79e702589d00a26506d5c.jpg">
+						</div>
+					</div>
+  					<div class="text-item">
+						<div class="text-content">揭开熊的过去，世界政府的空白历史线索浮现</div>
+						<div class="img-box">
+							<img src="https://www.rpgsy.com/uploadfiles/image/20250828/20250828155894759475.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">五老星亲临，岛内战火升级，贝加庞克牺牲</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20230606s/300/w720h380/20230606/6d12-f0a52c3b70dce5d0256d03917c19306d.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">草帽团与伙伴协力突围，离开蛋尖岛</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20231005s/224/w1280h544/20231005/aafa-c44a29f013504f12a3ae3f1ad9aaf729.jpg".jpg>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>艾尔巴夫篇</h3>
+					<div class="blind-carousel-wrap">
+						<div class="blind-container" id="swiper-aierbafu"></div>
+						<div class="blind-carousel-indicators" id="indicator-aierbafu"></div>
+					</div>
+
+					<div class="text-item">
+						<div class="text-content">登陆巨人之国艾尔巴夫，邂逅洛基王子</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20250227ac/725/w2000h1125/20250227/2c9d-351b28b4be89ade82ad7192b6ebd405c.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">探索巨人族历史，揭开古代巨人的秘密</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20220331ac/199/w640h359/20220331/2590-27d25a61ec325b6cda59500a197e7fe9.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">与洛基交锋，卷入巨人国权力纷争</div>
+						<div class="img-box">
+							<img src="https://a.zdmimg.com/202601/31/697df09f9d122369.jpg_e1080.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">红发香克斯登场，与路飞正面对峙</div>
+						<div class="img-box">
+							<img src="https://n.sinaimg.cn/sinakd20231029ac/441/w1818h1023/20231029/f0fd-f2d3759bcf93c50e1efb4ecb28a3a2a2.jpg">
+						</div>
+					</div>
+					<div class="text-item">
+						<div class="text-content">巨人国大战开启，草帽团迎来新挑战</div>
+						<div class="img-box">
+							<img src="https://img.3dmgame.com/uploads/images/news/20260402/1775095914_346427_jpg_r.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="content-panel" id="panel2">
+		<h2>人物介绍</h2>
+		<div class="card-wrap">
+
+			<div class="card">
+				<div class="card-body">
+					<h3>蒙奇·D·路飞</h3>
+					<p class="click-p" data-img="luffy1.jpg">草帽海贼团船长</p>
+					<p class="click-p" data-img="luffy2.jpg">橡胶果实（人人果实·幻兽种尼卡形态）能力者</p>
+					<p class="click-p" data-img="luffy3.jpg">梦想：成为海贼王，找到大秘宝ONE PIECE</p>
+					<p class="click-p" data-img="luffy4.jpg">性格乐观纯粹，极度重视伙伴</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>罗罗诺亚·索隆</h3>
+					<p class="click-p" data-img="zoro1.jpg">草帽海贼团战斗员，剑士</p>
+					<p class="click-p" data-img="zoro2.jpg">三刀流剑术高手</p>
+					<p class="click-p" data-img="zoro3.jpg">梦想：成为世界第一大剑豪</p>
+					<p class="click-p" data-img="zoro4.jpg">路痴，坚守与古伊娜的约定</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>娜美</h3>
+					<p class="click-p" data-img="nami1.jpg">草帽海贼团航海士</p>
+					<p class="click-p" data-img="nami2.jpg">精通气象学与制图，武器天候棒</p>
+					<p class="click-p" data-img="nami3.jpg">梦想：绘制完整的世界海图</p>
+					<p class="click-p" data-img="nami4.jpg">聪明机敏，早期为拯救村庄孤军奋战</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>乌索普</h3>
+					<p class="click-p" data-img="usopp1.jpg">草帽海贼团狙击手</p>
+					<p class="click-p" data-img="usopp2.jpg">擅长制造各种发明与陷阱</p>
+					<p class="click-p" data-img="usopp3.jpg">梦想：成为勇敢的海上战士</p>
+					<p class="click-p" data-img="usopp4.jpg">胆小却总能在关键时刻挺身而出</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>山治</h3>
+					<p class="click-p" data-img="sanji1.jpg">草帽海贼团厨师</p>
+					<p class="click-p" data-img="sanji2.jpg">黑足，只用脚战斗，绝不伤害女性</p>
+					<p class="click-p" data-img="sanji3.jpg">梦想：找到传说之海All Blue</p>
+					<p class="click-p" data-img="sanji4.jpg">出身杰尔马王国，厨艺高超</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>托尼托尼·乔巴</h3>
+					<p class="click-p" data-img="chopper1.jpg">草帽海贼团船医</p>
+					<p class="click-p" data-img="chopper2.jpg">人人果实能力驯鹿，可多重变形</p>
+					<p class="click-p" data-img="chopper3.jpg">梦想：研发能治愈所有疾病的万能药</p>
+					<p class="click-p" data-img="chopper4.jpg">内心柔软，容易被夸奖感动</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>妮可·罗宾</h3>
+					<p class="click-p" data-img="robin1.jpg">草帽海贼团考古学家</p>
+					<p class="click-p" data-img="robin2.jpg">花花果实能力者，可以长出肢体</p>
+					<p class="click-p" data-img="robin3.jpg">梦想：解读历史正文，揭开空白百年历史</p>
+					<p class="click-p" data-img="robin4.jpg">奥哈拉唯一幸存者，饱经苦难</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>弗兰奇</h3>
+					<p class="click-p" data-img="franky1.jpg">草帽海贼团船匠</p>
+					<p class="click-p" data-img="franky2.jpg">改造人，可乐驱动，桑尼号制造者</p>
+					<p class="click-p" data-img="franky3.jpg">梦想：亲手打造的船可以航行到伟大航路终点</p>
+					<p class="click-p" data-img="franky4.jpg">性格热血，喜欢喊Super！</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>布鲁克</h3>
+					<p class="click-p" data-img="brook1.jpg">草帽海贼团音乐家</p>
+					<p class="click-p" data-img="brook2.jpg">黄泉果实能力者，死后复活只剩骷髅</p>
+					<p class="click-p" data-img="brook3.jpg">梦想：回到拉布身边，完成多年前的约定</p>
+					<p class="click-p" data-img="brook4.jpg">喜爱音乐，爱讲冷笑话</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>甚平</h3>
+					<p class="click-p" data-img="jinbe1.jpg">草帽海贼团舵手</p>
+					<p class="click-p" data-img="jinbe2.jpg">鱼人空手道大师，原七武海</p>
+					<p class="click-p" data-img="jinbe3.jpg">梦想：推动人鱼与人类和平共处</p>
+					<p class="click-p" data-img="jinbe4.jpg">沉稳可靠，重情重义的海之侠士</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="content-panel" id="panel3">
+		<h2>人物关系</h2>
+		<div class="card-wrap">
+			<div class="card">
+				<div class="card-body">
+					<h3>路飞 & 香克斯</h3>
+					<p class="click-p" data-img="rel1.jpg">香克斯是路飞的人生引路人</p>
+					<p class="click-p" data-img="rel2.jpg">托付草帽，约定在伟大航路终点重逢</p>
+					<p class="click-p" data-img="rel3.jpg">香克斯相信路飞终将成长为大海贼</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>路飞 & 艾斯 & 萨博</h3>
+					<p class="click-p" data-img="rel4.jpg">结义三兄弟，从小一起在达旦家长大</p>
+					<p class="click-p" data-img="rel5.jpg">艾斯与萨博是路飞最重要的家人</p>
+					<p class="click-p" data-img="rel6.jpg">三人约定要自由地活下去</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>路飞 & 草帽全员</h3>
+					<p class="click-p" data-img="rel7.jpg">不是简单的伙伴，是可以托付性命的家人</p>
+					<p class="click-p" data-img="rel8.jpg">每个人都有自己的梦想，互相扶持奔赴终点</p>
+					<p class="click-p" data-img="rel9.jpg">路飞尊重每一位伙伴的选择</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>索隆 & 古伊娜</h3>
+					<p class="click-p" data-img="rel10.jpg">古伊娜是索隆年少的对手与挚友</p>
+					<p class="click-p" data-img="rel11.jpg">古伊娜离世，索隆继承她的梦想</p>
+					<p class="click-p" data-img="rel12.jpg">立志成为世界第一大剑豪，替她看遍世界</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>娜美 & 贝尔梅尔</h3>
+					<p class="click-p" data-img="rel13.jpg">贝尔梅尔收养娜美与诺琪高</p>
+					<p class="click-p" data-img="rel14.jpg">为保护两个养女牺牲，是娜美的精神支柱</p>
+					<p class="click-p" data-img="rel15.jpg">娜美一直牢记贝尔梅尔的爱与勇气</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<h3>山治 & 哲普</h3>
+					<p class="click-p" data-img="rel16.jpg">红脚哲普，山治的救命恩人兼师父</p>
+					<p class="click-p" data-img="rel17.jpg">教导山治厨艺与骑士道精神</p>
+					<p class="click-p" data-img="rel18.jpg">哲普的海上餐厅，是山治童年的家</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>罗宾 & 奥哈拉</h3>
+					<p class="click-p" data-img="rel19.jpg">奥哈拉是考古学家的故乡，罗宾的家乡</p>
+					<p class="click-p" data-img="rel20.jpg">屠魔令毁灭奥哈拉，罗宾成为唯一幸存者</p>
+					<p class="click-p" data-img="rel21.jpg">多年被世界政府通缉，一直在寻找历史正文</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>弗兰奇 & 汤姆先生</h3>
+					<p class="click-p" data-img="rel22.jpg">汤姆是弗兰奇的师父，世界第一造船匠</p>
+					<p class="click-p" data-img="rel23.jpg">汤姆因为建造罗杰的船被世界政府定罪</p>
+					<p class="click-p" data-img="rel24.jpg">弗兰奇继承师父遗愿，造出可以穿越伟大航路的桑尼号</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>乔巴 & 希鲁鲁克医生</h3>
+					<p class="click-p" data-img="rel25.jpg">希鲁鲁克是第一个接纳乔巴的人</p>
+					<p class="click-p" data-img="rel26.jpg">希鲁鲁克用一生追逐“樱花奇迹”，为信念牺牲</p>
+					<p class="click-p" data-img="rel27.jpg">乔巴立志做出万能药，继承医生的温柔与理想</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<h3>乌索普 & 可雅</h3>
+					<p class="click-p" data-img="rel28.jpg">可雅是乌索普故乡的体弱少女</p>
+					<p class="click-p" data-img="rel29.jpg">乌索普每天讲谎话陪伴生病的可雅</p>
+					<p class="click-p" data-img="rel30.jpg">约定好：等乌索普成为海上战士再回来相见</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>甚平 & 费舍尔·泰格</h3>
+					<p class="click-p" data-img="rel31.jpg">费舍尔·泰格解放奴隶，创立太阳海贼团</p>
+					<p class="click-p" data-img="rel32.jpg">泰格的思想深深影响甚平，追求鱼人与人类的和平</p>
+					<p class="click-p" data-img="rel33.jpg">甚平继承太阳海贼团，背负鱼人族的命运前行</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>布鲁克 & 拉布</h3>
+					<p class="click-p" data-img="rel34.jpg">布鲁克与鲸鱼拉布在双子岬立下约定</p>
+					<p class="click-p" data-img="rel35.jpg">伙伴全部遇难，布鲁克依靠黄泉果实复活</p>
+					<p class="click-p" data-img="rel36.jpg">独自漂泊50年，一直坚持回去和拉布重逢</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="content-panel" id="panel4">
+		<h2>海米同人</h2>
+		<div class="card-wrap">
+			<div class="card">
+				<div class="card-body">
+				<h3>经典台词 · 路飞</h3>
+				<p class="click-p" data-img="quote1.jpg">我是要成为海贼王的男人！</p>
+				<p class="click-p" data-img="quote2.jpg">海贼王不是统治大海的王者，是这片大海上最自由的人。</p>
+				<p class="click-p" data-img="quote3.jpg">就算死，我也不会让伙伴受到伤害。</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>经典台词 · 索隆</h3>
+					<p class="click-p" data-img="quote4.jpg">我不会再输了！你有意见吗，海贼王！</p>
+					<p class="click-p" data-img="quote5.jpg">灾难接踵而至的话，那就不是命运，是诅咒。</p>
+					<p class="click-p" data-img="quote6.jpg">背后受伤是剑士的耻辱。</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>经典台词 · 其他伙伴</h3>
+					<p class="click-p" data-img="quote7.jpg">山治：能原谅女人谎言的，才是男人。</p>
+					<p class="click-p" data-img="quote8.jpg">罗宾：我想要活下去！把我一起带去大海！</p>
+					<p class="click-p" data-img="quote9.jpg">乔巴：我要成为万能药！</p>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>海米感悟 · 梦想</h3>
+					<p class="click-p" data-img="feel1.jpg">海贼王讲的从来不是成王，而是一群人奔赴各自的梦。</p>
+					<p class="click-p" data-img="feel2.jpg">每个人都带着伤痕上船，却互相成为对方的救赎。</p>
+					<p class="click-p" data-img="feel3.jpg">冒险终会抵达终点，但伙伴之间的羁绊永不落幕。</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>海米感悟 · 自由</h3>
+					<p class="click-p" data-img="feel4.jpg">自由不是随心所欲，是拥有直面苦难、继续前行的勇气。</p>
+					<p class="click-p" data-img="feel5.jpg">大海很残酷，但永远有人愿意为了心中的信念扬帆。</p>
+					<p class="click-p" data-img="feel6.jpg">这就是ONE PIECE，一场关于爱、勇气与自由的史诗。</p>
+				</div>
+			</div>
+
+
+			<div class="card">
+				<div class="card-body">
+					<h3>同人小故事 · 双子岬再会</h3>
+					<p class="click-p" data-img="story1.jpg">布鲁克终于回到双子岬，巨大鲸鱼拉布认出了旧友的歌声。</p>
+					<p class="click-p" data-img="story2.jpg">时隔五十年，约定终于兑现，大海回荡起宾克斯的美酒。</p>
+					<p class="click-p" data-img="story3.jpg">旧的故事落幕，新的冒险仍在继续。</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<h3>同人小故事 · 终点的草帽</h3>
+					<p class="click-p" data-img="story4.jpg">当路飞抵达拉夫德鲁，他举起草帽望向远方的海面。</p>
+					<p class="click-p" data-img="story5.jpg">香克斯在某处的海上，看见那顶草帽终于抵达了终点。</p>
+					<p class="click-p" data-img="story6.jpg">两代人的约定，在这片大海圆满。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<script>
+	const navItems = document.querySelectorAll('.nav-item');
+	const panels = document.querySelectorAll('.content-panel');
+	const textItems = document.querySelectorAll('.text-item');
+	const pageBg = document.querySelector('.page-blur-bg');
+	const smallImages = document.querySelectorAll('.small-img');
+
+	textItems.forEach(item => {
+		item.addEventListener('mouseenter', function(){
+			const img = item.querySelector('.img-box img');
+			if (img && pageBg){
+				pageBg.style.backgroundImage = `url(${img.src})`;
+				pageBg.style.opacity = '1';
+			}
+		});
+		item.addEventListener('mouseleave', function(){
+			pageBg.style.opacity = '0';
+		});
+	});
+	smallImages.forEach(img => {
+		img.addEventListener('mouseenter', function() {
+			if(pageBg){
+				pageBg.style.backgroundImage = `url(${this.src})`;
+				pageBg.style.opacity = '1';
+			}
+		});
+		img.addEventListener('mouseleave', function() {
+			pageBg.style.opacity = '0';
+		});
+	});
+
+
+
+
+
+	navItems.forEach(item => {
+		item.addEventListener('click', function(){
+
+			navItems.forEach(nav => nav.classList.remove('active'));
+
+			this.classList.add('active');
+			const targetId = this.getAttribute('data-target');
+        
+
+			panels.forEach(panel => panel.classList.remove('show'));
+
+			document.getElementById(targetId).classList.add('show');
+
+		})
+	})
+function createBlindCarousel(swiperId, indicatorId, imageList, interval=5000) {
+  const container = document.getElementById(swiperId);
+  const indicatorWrap = document.getElementById(indicatorId);
+  if(!container || !indicatorWrap) return;
+
+  let currentSlide = -1;
+  let carouselInterval;
+  const config = {
+    enabled: true,
+    pauseOnHover: true,
+    interval: interval
+  };
+
+  container.innerHTML = "";
+  indicatorWrap.innerHTML = "";
+
+  function calcMarginTop(index) {
+    const list = [0, "2.5%", "5%", "2.5%"];
+    return list[index % 4];
+  }
+
+  imageList.forEach((image, index) => {
+    const card = document.createElement("div");
+    card.className = "blind-card";
+    card.dataset.index = index;
+    card.style.marginTop = calcMarginTop(index);
+    const cardInner = document.createElement("div");
+    cardInner.className = "blind-card__inner";
+    const picture = document.createElement("picture");
+    const img = document.createElement("img");
+    img.src = image.src;
+    img.alt = image.alt || `图${index+1}`;
+    picture.appendChild(img);
+    cardInner.appendChild(picture);
+    card.appendChild(cardInner);
+    container.appendChild(card);
+  });
+
+  imageList.forEach((_, index) => {
+    const indicator = document.createElement("div");
+    indicator.className = `blind-carousel-indicator ${index===0?"active":""}`;
+    indicator.dataset.index = index;
+    indicator.onclick = ()=>{
+      clearInterval(carouselInterval);
+      goToSlide(index);
+      startCarousel();
+    }
+    indicatorWrap.appendChild(indicator);
+  });
+
+  function goToSlide(index) {
+    if(index === currentSlide) return;
+    const cards = container.querySelectorAll(".blind-card");
+    const indicators = indicatorWrap.querySelectorAll(".blind-carousel-indicator");
+    currentSlide = index;
+    cards.forEach((c,i)=> c.classList.toggle("is-active", i===index));
+    indicators.forEach((d,i)=> d.classList.toggle("active", i===index));
+  }
+
+  function startCarousel() {
+    if(!config.enabled) return;
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(()=>{
+      goToSlide((currentSlide+1) % imageList.length);
+    }, config.interval);
+  }
+  function pauseCarousel(){
+    clearInterval(carouselInterval);
+  }
+
+  container.addEventListener("mouseenter", ()=>{
+    if(config.pauseOnHover) pauseCarousel();
+  })
+  container.addEventListener("mouseleave", ()=>{
+    if(config.pauseOnHover && config.enabled) startCarousel();
+  })
+  container.addEventListener("mouseover", (e)=>{
+    const card = e.target.closest(".blind-card");
+    if(card){
+      const idx = Number(card.dataset.index);
+      goToSlide(idx);
+    }
+  })
+
+  setTimeout(()=>goToSlide(0),100);
+  startCarousel();
+
+  window.addEventListener("resize",()=>{
+    pauseCarousel();
+    startCarousel();
+  })
+}
+
+// 东海篇
+const imgEastBlue = [
+  {src:"https://puui.qpic.cn/vpic_cover/i0509m30fsz/i0509m30fsz_hz.jpg/1280",alt:"路飞啊"},
+  {src:"https://k.sinaimg.cn/n/front/320/w640h480/20180928/wwlm-hkmwytp6125539.jpg/w700d1q75cms.jpg",alt:"带着你的伙伴们"},
+  {src:"https://k.sinaimg.cn/n/sinakd20231218s/200/w640h360/20231218/7537-d97cdfbe33c5370ef9ec332bfd160817.jpg/w700d1q75cms.jpg",alt:"去成王吧"},
+  {src:"https://pic2.zhimg.com/50/v2-ece76afd4421bed08e543ed2cfd6951d_720w.jpg?source=1940ef5c",alt:"去闯荡吧"},
+  {src:"https://n.sinaimg.cn/sinacn13/686/w632h854/20180601/126d-hcikcew0768883.jpg",alt:"世界上最自由的人"}
+];
+// 阿拉巴斯坦篇
+const imgAlabasta = [
+  {src:"https://img.3dmgame.com/uploads/images/news/20260407/1775565180_209783.webp",alt:"拯救一个国家"},
+  {src:"https://pic4.zhimg.com/v2-bd79268a3baeff25850cb2b4b7c5cd97_b.jpg",alt:"降下一场甘霖"},
+  {src:"https://pic4.zhimg.com/v2-531a6ce115c285818af1fc44cd3d1fd3_r.jpg",alt:"为了生民，为了生命"},
+  {src:"https://n.sinaimg.cn/sinacn20190522s/646/w641h805/20190522/6a2f-hxhyiun4341008.jpg",alt:"泽润仇恨包裹的心灵"},
+];
+
+//空岛篇
+const imgKongDao = [  
+  {src:"https://c-ssl.duitang.com/uploads/item/201506/06/20150606142718_zC4iM.thumb.1000_0.jpeg",alt:"备受嘲笑的谎言"},
+  {src:"https://p5.itc.cn/images01/20210503/75b752138b954a7fbfdb467ffd7eef34.jpeg",alt:"在真相悄然降临的时候"},
+  {src:"https://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20200504/8446c0b1e75b4da094b0802a0f87f0fb.jpeg",alt:"让人哑口无言"},
+  {src:"https://pic1.zhimg.com/v2-051398c5d3fade7efbd54f5cd1985e37_r.jpg",alt:"勇敢的人啊"},
+  {src:"https://pic2.zhimg.com/v2-790a88c87db2aefc323e947336111549_b.jpg",alt:"去追求那渺茫的梦想吧"},
+];
+
+//司法岛篇
+const imgSiFa = [  
+  {src:"https://nowre.com/wp-content/uploads/2020/05/5986912410_682fed19e2_b.0.jpg",alt:"恶魔之子"},
+  {src:"https://c-ssl.dtstatic.com/uploads/blog/202302/28/20230228091819_dbd9d.thumb.400_0.jpg",alt:"天使之目"},
+  {src:"http://img.yaowan.com/UploadFile/UpImg/201208/c5d393dd4a0c364c8fac4ecf87424406.jpg",alt:"相信伙伴吧"},
+  {src:"https://k.sinaimg.cn/n/sinakd2020830s/33/w533h300/20200830/85eb-iypetiu6829821.jpg/w700d1q75cms.jpg",alt:"相信大海吧"},
+  {src:"https://news.yxrb.net/uploadfile/2022/1112/16681828848ae156.png",alt:"那尽头有值得托付后背的人"},
+];
+
+//三角帆
+const imgSanJiaoFan = [
+  {src:"https://n.sinaimg.cn/sinakd20210311s/300/w720h380/20210311/f9a8-kmeeius8087276.jpg",alt:"失去了影子"},
+  {src:"https://c-ssl.duitang.com/uploads/item/201710/17/20171017110600_LPWdh.jpeg",alt:"失去了家人"},
+  {src:"https://k.sinaimg.cn/n/sinacn14/173/w553h420/20180913/c7eb-hkahyhw6641898.jpg/w700d1q75cms.jpg",alt:"失去了同伴"},
+  {src:"https://n.sinaimg.cn/sinacn/20171012/5964-fymvuys8003095.jpg",alt:"尽管如此"},
+  {src:"https://e0.ifengimg.com/01/2019/0310/8986F004376CF54DDB8E20F78A54D52E667FAFE0_size1148_w1284_h687.png",alt:"在这片迷雾中演奏家乡的音乐吧"},
+];
+
+//3D2Y
+const img3D2Y = [
+  {src:"https://c-ssl.duitang.com/uploads/item/201510/11/20151011135857_eRthJ.jpeg",alt:"不受期待的降世"},
+  {src:"https://n.sinaimg.cn/sinacn10105/738/w1920h1218/20190629/8ded-hyzpvis1086538.jpg",alt:"在这片大海上"},
+  {src:"https://image.9game.cn/2016/8/30/14114003.jpg",alt:"你总会找到"},
+  {src:"https://so1.360tres.com/t0131689685ed5d2d70.jpg",alt:"属于自己的家人"},
+  {src:"https://pic3.zhimg.com/v2-38d9f8d4c477f21e07d710d6bceac951_1440w.jpg?source=172ae18b",alt:"承蒙厚爱了"},
+];
+
+//鱼人岛
+const imgYuRen = [
+  {src:"https://pic.kts.g.mi.com/31f77eeef7baad91dd65d1e279954475248698288443035970.png",alt:"一样的血流"},
+  {src:"https://n.sinaimg.cn/sinacn/20170817/ccc1-fykcypp8304976.png",alt:"为何也要分高低贵贱"},
+  {src:"https://k.sinaimg.cn/n/sinakd10117/755/w498h257/20210502/38c8-kppteas1612983.png/w700d1q75cms.jpg",alt:"总有一天"},
+  {src:"https://k.sinaimg.cn/n/front/284/w696h388/20190103/ygvP-hqzxptp2035960.jpg/w700d1q75cms.jpg",alt:"所有人都可以在同一个阳光下欢笑吧"},
+  {src:"https://k.sinaimg.cn/n/sinacn20190610s/78/w531h347/20190610/395a-hyeztys3770174.jpg/w700d1q75cms.jpg",alt:"不要让仇恨延续"},
+];
+
+//德雷斯罗萨
+const imgDeLeiSiLuoSa = [
+  {src:"https://b-ssl.duitang.com/uploads/item/201508/19/20150819002920_cr2Rw.thumb.700_0.png",alt:"丝线做的铁笼"},
+  {src:"https://n.sinaimg.cn/sinakd20230702ac/200/w640h360/20230702/f17a-0118881f07911d6eefad13c66a52757a.jpg",alt:"名为玩偶的控制"},
+  {src:"https://5b0988e595225.cdn.sohucs.com/images/20200224/6a5bce793d544f1e92b2f75b65a3c6de.jpeg",alt:"布局人何尝不是以心为囚"},
+  {src:"https://k.sinaimg.cn/n/front/640/w720h720/20190302/L2K1-htstzcc3062890.jpg/w700d1q75cms.jpg",alt:"多年后的子弹正中眉心 "},
+  {src:"https://k.sinaimg.cn/n/sinacn/20171107/8169-fynnnsc8183037.jpg/w700d1q75cms.jpg",alt:"弟弟的精神居然还在延续"},
+];
+
+//蛋糕岛
+const imgDanGao = [
+  {src:"https://n.sinaimg.cn/sinacn20114/85/w1080h605/20190202/387b-hsmkfyn7143468.jpg",alt:"甜蜜的谎言"},
+  {src:"http://guangyuanol.cn/uploads/allimg/181231/14130R507-2.jpg",alt:"钢筋铁骨中唯一跳动的脆弱的心"},
+  {src:"https://nowre.com/wp-content/uploads/2020/06/1_meitu_1-15.jpg",alt:"回来吧"},
+  {src:"https://c-ssl.dtstatic.com/uploads/item/201807/22/20180722132722_cksyb.thumb.1000_0.jpg",alt:"你不是残次品"},
+  {src:"https://c-ssl.duitang.com/uploads/item/201510/23/20151023092918_SijHa.jpeg",alt:"你是妈妈拼命保下的宝物"},
+];
+
+//和之国
+const imgHeZhiGuo = [
+  {src:"https://c-ssl.duitang.com/uploads/item/202005/13/20200513122946_uwswr.jpg",alt:"远方又传来故人的声音"},
+  {src:"https://pic2.zhimg.com/v2-bc22b34a98c1d774f3174fe807eec908_1200x500.jpg",alt:"脏污河流中漂来的"},
+  {src:"https://n.sinaimg.cn/sinakd20200629ac/457/w1204h853/20200629/6165-ivrxcex2324422.jpg",alt:"是救命的果实"},
+  {src:"https://www.517japan.com/upload/img/20190618/23e2f10a4d2201c13ab66e1cfd592331.jpg",alt:"对这残酷的世界"},
+  {src:"https://c-ssl.duitang.com/uploads/item/201908/06/20190806124349_gobgy.jpg",alt:"再一次绽露微笑吧"},
+];
+
+//蛋尖岛
+const imgDanJian = [
+  {src:"https://n.sinaimg.cn/sinakd20240107ac/199/w639h360/20240107/a3f2-6d643a5008b7625a36fafd6bee08deb9.jpg",alt:"父亲的爱"},
+  {src:"https://n.sinaimg.cn/sinakd20122/450/w800h450/20240107/8798-17584fd6d829858e25e034683c723175.jpg",alt:"比山更沉"},
+  {src:"https://img.pixivdaily.com/small/116779448.jpg",alt:"比海更阔"},
+  {src:"https://a.zdmimg.com/202512/07/693560030e5fb779.jpg_a200.jpg",alt:"亲爱的孩子"},
+  {src:"https://n.sinaimg.cn/sinakd20240505ac/448/w1024h1024/20240505/1a98-bf2e3aa38eaac672ad7e7f901a41e5cb.jpg",alt:"不要流泪啊"},
+];
+
+//艾尔巴夫
+const imgAiErBaFu = [
+  {src:"https://p0.qhimg.com/t11afb53337823a24b47a0589a6.png",alt:"古岭起悲笳"},
+  {src:"https://pica.zhimg.com/v2-8bcf5b6c8e8e80154cdb7e1f3ee04f1e_1440w.jpg",alt:"王途覆乱沙"},
+  {src:"https://img.3dmgame.com/uploads/images/news/20260402/1775095914_902776_jpg_r.jpg",alt:"仇丝缠骨肉"},
+  {src:"https://img.3dmgame.com/uploads/images/news/20260402/1775095913_989802_jpg_r.jpg",alt:"巨斧落残霞"},
+  {src:"https://pic.kts.g.mi.com/80bef1375f35f963dc1a8ccb34375d963956361485806465140.jpg",alt:"待客破沉枷"},
+];
+
+window.onload = function(){
+  createBlindCarousel("swiper-eastblue", "indicator-eastblue", imgEastBlue,5000);
+  createBlindCarousel("swiper-alabasta", "indicator-alabasta", imgAlabasta,5000);
+  createBlindCarousel("swiper-kongdao", "indicator-kongdao", imgKongDao,5000);
+  createBlindCarousel("swiper-sifa", "indicator-sifa", imgSiFa,5000);
+  createBlindCarousel("swiper-sanjiaofan", "indicator-sanjiaofan", imgSanJiaoFan,5000);
+  createBlindCarousel("swiper-3d2y", "indicator-3d2y", img3D2Y,5000);
+  createBlindCarousel("swiper-yuren", "indicator-yuren", imgYuRen,5000);
+  createBlindCarousel("swiper-deleisiluosa", "indicator-deleisiluosa", imgDeLeiSiLuoSa,5000);
+  createBlindCarousel("swiper-dangao", "indicator-dangao", imgDanGao,5000);
+  createBlindCarousel("swiper-hezhiguo", "indicator-hezhiguo", imgHeZhiGuo,5000);
+  createBlindCarousel("swiper-danjian", "indicator-danjian", imgDanJian,5000);
+  createBlindCarousel("swiper-aierbafu", "indicator-aierbafu", imgAiErBaFu,5000);
+
+}
+
+	</script>
+</body>
+</html>
